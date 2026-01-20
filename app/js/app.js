@@ -336,8 +336,15 @@ class UIController {
             ? this.eventManager.getNearbyEvents()
             : this.eventManager.getAllEvents();
 
+        // IMPORTANT: keep filters composable.
+        // If nearbyMode is on, search must filter the *current* list (nearby events),
+        // not restart from all events (which would break "Find i nærheden").
         if (searchQuery) {
-            events = this.eventManager.searchEvents(searchQuery);
+            const q = searchQuery.toLowerCase();
+            events = events.filter(event =>
+                event.title.toLowerCase().includes(q) ||
+                event.description.toLowerCase().includes(q)
+            );
         }
 
         if (category) {
