@@ -1,94 +1,94 @@
-# Local Events App
+# Lokale events (app)
 
-A modern web application to discover, create, and join local events in your area.
+En moderne webapp hvor du kan finde, oprette og tilmelde dig lokale events i nærheden.
 
-## Features
+## Funktioner
 
-- **Discover Events**: Browse events in your local area with search and category filtering
-- **Create Events**: Create new events with location, time, category, and description
-- **Join Events**: Join events you're interested in and track your attendance
-- **Geolocation**: Find events near you using GPS coordinates
-- **Event Details**: View full event information and participant counts
-- **Local Storage**: Events are saved locally in your browser
-- **Responsive Design**: Works on desktop, tablet, and mobile devices
+- **Find events**: Gennemse events med søgning og kategorifilter
+- **Opret events**: Opret nye events med sted, tid, kategori og beskrivelse
+- **Tilmeld events**: Tilmeld dig events du er interesseret i og hold styr på dine tilmeldinger
+- **Placering (GPS)**: Find events i nærheden via GPS-koordinater
+- **Eventdetaljer**: Se fulde detaljer og antal deltagere
+- **LocalStorage**: Events gemmes lokalt i din browser
+- **Responsivt design**: Virker på desktop, tablet og mobil
 
-## Getting Started
+## Kom godt i gang
 
-1. Open `app/index.html` in your web browser
-2. Explore the "Events" tab to see available local events
-3. Use "Find Near Me" to see nearby events (requires location permission)
-4. Create a new event in the "Create Event" tab
-5. Track your joined events in the "My Events" tab
+1. Åbn `app/index.html` i din browser
+2. Se events under fanen "Events"
+3. Brug "📍 Find i nærheden" for at se events tæt på (kræver placeringstilladelse)
+4. Opret et nyt event under fanen "Opret event"
+5. Se dine tilmeldte events under fanen "Mine events"
 
-## Usage
+## Brug
 
-### Viewing Events
-- Browse all events in the Events tab
-- Search for events by title or description
-- Filter by category (Sports, Music, Food, Outdoor, Social, Education, Art)
-- See distance to events if you share your location
+### Se events
+- Se alle events under fanen "Events"
+- Søg efter events via titel eller beskrivelse
+- Filtrér efter kategori (Sport, Musik, Mad & drikke, Udendørs, Socialt, Uddannelse, Kunst & kultur)
+- Se afstand til events, hvis du deler din placering
 
-### Creating Events
-1. Go to "Create Event" tab
-2. Fill in event details (title, date, time, location)
-3. Use "Get My Location" button to auto-fill coordinates
-4. Add a description and maximum participant count
-5. Click "Create Event" to publish
+### Opret events
+1. Gå til fanen "Opret event"
+2. Udfyld detaljer (titel, dato, tidspunkt, sted)
+3. Brug knappen "📍 Brug min placering" for at udfylde koordinater automatisk
+4. Tilføj beskrivelse og maks. antal deltagere
+5. Klik "Opret event" for at oprette
 
-### Joining Events
-1. Click on any event card to view details
-2. Click "Join Event" to register
-3. See your joined events in the "My Events" tab
-4. Click to leave an event if needed
+### Tilmeld/afmeld events
+1. Klik på et event-kort for at se detaljer
+2. Klik "Tilmeld event"
+3. Se dine tilmeldte events under fanen "Mine events"
+4. Klik "Forlad event" for at afmelde dig
 
-## Technical Details
+## Tekniske detaljer
 
-### Architecture
-- **EventManager Class**: Handles all event logic and data persistence
-- **UIController Class**: Manages user interface and interactions
-- **Local Storage**: Events persist in browser's localStorage
+### Arkitektur
+- **`EventManager`**: Håndterer event-logik og datalagring
+- **`UIController`**: Styrer UI og brugerinteraktioner
+- **LocalStorage**: Events gemmes i browserens localStorage
 
-### Data Storage
-- Events are stored in `events` key in localStorage
-- Joined events are tracked in `joinedEvents` key
-- Data persists between browser sessions
+### Data
+- Events gemmes i nøglen `events` i localStorage
+- Tilmeldte events spores i nøglen `joinedEvents`
+- Data bevares mellem browser-sessioner
 
-### Features
-- Real-time search and filtering
-- Distance calculation using Haversine formula
-- Participant tracking with capacity limits
-- Category-based organization
-- Default sample events for demonstration
+### Funktioner
+- Søgning og filtrering i realtid
+- Afstandsberegning med Haversine-formlen
+- Deltagersporing med kapacitetsgrænser
+- Kategoribaseret organisering
+- Standard demo-events
 
-## Browser Compatibility
+## Browser-kompatibilitet
 
-- Chrome/Edge: ✓ Full support
-- Firefox: ✓ Full support
-- Safari: ✓ Full support
-- Mobile browsers: ✓ Full support
+- Chrome/Edge: ✓ Fuld support
+- Firefox: ✓ Fuld support
+- Safari: ✓ Fuld support
+- Mobilbrowsere: ✓ Fuld support
 
-## Technologies Used
+## Teknologier
 
 - HTML5
-- CSS3 (with Flexbox and Grid)
+- CSS3 (med Flexbox og Grid)
 - Vanilla JavaScript (ES6+)
-- Browser APIs (localStorage, Geolocation)
+- Browser-API'er (localStorage, Geolocation)
 
-## Future Enhancements
+## Mulige forbedringer
 
-- Event filtering by distance radius
-- User authentication and profiles
-- Event comments and ratings
-- Push notifications for upcoming events
-- Event calendar view
-- Export events to calendar
-- Share events on social media
-- Backend server for centralized event management
-- Admin controls and event moderation
+- Filtrering efter afstands-radius
+- Brugerlogin og profiler
+- Kommentarer og ratings på events
+- Push-notifikationer for kommende events
+- Kalender-visning
+- Eksport til kalender
+- Deling på sociale medier
+- Backend-server til central event-håndtering
+- Admin-kontrol og moderation
 
-## Notes
+## Noter
 
-- All events are stored locally in your browser
-- Clearing browser data will reset the app
-- Geolocation requires user permission
-- Distance calculation uses straight-line distance (not actual travel distance)
+- Alle events gemmes lokalt i din browser
+- Hvis du rydder browserdata, nulstilles appen
+- Placering kræver bruger-tilladelse
+- Afstand er “fugleflugtslinje” (ikke rejseafstand)

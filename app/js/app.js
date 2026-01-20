@@ -33,84 +33,84 @@ class EventManager {
         return [
             {
                 id: 1,
-                title: 'Community Basketball Game',
+                title: 'Fællesskabs-basketkamp',
                 category: 'sports',
                 date: '2026-01-25',
                 time: '18:00',
-                location: 'Central Park Court',
+                location: 'Central Park-banen',
                 latitude: 55.676,
                 longitude: 12.569,
-                description: 'Weekly basketball game for all skill levels. Bring your friends!',
+                description: 'Ugentlig basketkamp for alle niveauer. Tag dine venner med!',
                 capacity: 20,
                 participants: 12,
                 creator: 'Alex S.'
             },
             {
                 id: 2,
-                title: 'Local Music Jam Session',
+                title: 'Lokal jam-session',
                 category: 'music',
                 date: '2026-01-24',
                 time: '19:30',
                 location: 'Coffee Corner Café',
                 latitude: 55.680,
                 longitude: 12.575,
-                description: 'Open jam session. Bring your instruments or just come to listen!',
+                description: 'Åben jam-session. Tag dit instrument med – eller kom bare og lyt!',
                 capacity: 30,
                 participants: 8,
                 creator: 'Jamie K.'
             },
             {
                 id: 3,
-                title: 'Pizza Night Social',
+                title: 'Pizza-aften',
                 category: 'food',
                 date: '2026-01-26',
                 time: '20:00',
-                location: 'Downtown Pizza Place',
+                location: 'Downtown Pizzeria',
                 latitude: 55.682,
                 longitude: 12.577,
-                description: 'Casual dinner gathering. Get to know new people in the area!',
+                description: 'Uformel middag. Mød nye mennesker i området!',
                 capacity: 40,
                 participants: 15,
                 creator: 'Maria L.'
             },
             {
                 id: 4,
-                title: 'Morning Hiking Adventure',
+                title: 'Morgenvandring i skoven',
                 category: 'outdoor',
                 date: '2026-01-25',
                 time: '08:00',
-                location: 'Forest Trail North',
+                location: 'Skovstien Nord',
                 latitude: 55.700,
                 longitude: 12.560,
-                description: 'Easy to moderate hiking trail. Meet at the parking lot. Bring water!',
+                description: 'Let til moderat rute. Vi mødes ved parkeringspladsen. Husk vand!',
                 capacity: 25,
                 participants: 10,
                 creator: 'Chris T.'
             },
             {
                 id: 5,
-                title: 'Beginner Yoga Class',
+                title: 'Yoga for begyndere',
                 category: 'social',
                 date: '2026-01-24',
                 time: '17:00',
-                location: 'Community Center',
+                location: 'Medborgerhuset',
                 latitude: 55.675,
                 longitude: 12.570,
-                description: 'Relaxing yoga session perfect for beginners. Mats provided.',
+                description: 'Afslappende yoga – perfekt for begyndere. Måtte er inkluderet.',
                 capacity: 20,
                 participants: 14,
                 creator: 'Sarah M.'
             },
             {
                 id: 6,
-                title: 'Art Workshop: Watercolor Basics',
+                title: 'Kunstworkshop: Akvarel for begyndere',
                 category: 'art',
                 date: '2026-01-27',
                 time: '14:00',
                 location: 'Creative Studio Hub',
                 latitude: 55.678,
                 longitude: 12.572,
-                description: 'Learn watercolor painting basics. All materials included.',
+                description: 'Lær grundlæggende akvarel. Alle materialer er inkluderet.',
                 capacity: 15,
                 participants: 6,
                 creator: 'Emma B.'
@@ -124,7 +124,7 @@ class EventManager {
             id: Date.now(),
             ...eventData,
             participants: 1,
-            creator: 'You'
+            creator: 'Dig'
         };
         this.events.push(newEvent);
         this.joinedEvents.push(newEvent.id);
@@ -238,6 +238,7 @@ class EventManager {
 class UIController {
     constructor() {
         this.eventManager = new EventManager();
+        this.nearbyMode = false; // when true, only show events near user
         this.init();
     }
 
@@ -255,9 +256,11 @@ class UIController {
         // Create event form
         document.getElementById('createEventForm').addEventListener('submit', (e) => this.handleCreateEvent(e));
 
-        // Location button
-        document.getElementById('getLocationBtn').addEventListener('click', () => this.getUserLocation());
-        document.getElementById('getCoordinates').addEventListener('click', () => this.getUserLocation());
+        // Location buttons
+        // "Find i nærheden" – brug position til at filtrere events
+        document.getElementById('getLocationBtn').addEventListener('click', () => this.getUserLocation(true));
+        // "Brug min placering" i formularen – kun til at udfylde felter
+        document.getElementById('getCoordinates').addEventListener('click', () => this.getUserLocation(false));
 
         // Search and filter
         document.getElementById('searchInput').addEventListener('input', () => this.renderEvents());
@@ -306,7 +309,7 @@ class UIController {
         };
 
         if (!eventData.latitude || !eventData.longitude) {
-            alert('Please provide coordinates or use the location button');
+            alert('Angiv koordinater eller brug knappen til placering');
             return;
         }
 
@@ -314,7 +317,7 @@ class UIController {
         this.renderEvents();
         
         // Show success message
-        this.showSuccessMessage('Event created successfully!');
+        this.showSuccessMessage('Event oprettet!');
 
         // Reset form
         document.getElementById('createEventForm').reset();
@@ -329,7 +332,9 @@ class UIController {
         const searchQuery = document.getElementById('searchInput').value;
         const category = document.getElementById('categoryFilter').value;
         
-        let events = this.eventManager.getAllEvents();
+        let events = this.nearbyMode && this.eventManager.userLocation
+            ? this.eventManager.getNearbyEvents()
+            : this.eventManager.getAllEvents();
 
         if (searchQuery) {
             events = this.eventManager.searchEvents(searchQuery);
@@ -343,7 +348,7 @@ class UIController {
         eventsList.innerHTML = '';
 
         if (events.length === 0) {
-            eventsList.innerHTML = '<div class="loading-placeholder">No events found</div>';
+            eventsList.innerHTML = '<div class="loading-placeholder">Ingen events fundet</div>';
             return;
         }
 
@@ -365,14 +370,14 @@ class UIController {
                     <h3>${event.title}</h3>
                     <p>${event.description.substring(0, 100)}${event.description.length > 100 ? '...' : ''}</p>
                     <div class="event-meta">
-                        <div class="event-meta-item">📅 ${this.formatDate(event.date)} at ${event.time}</div>
+                        <div class="event-meta-item">📅 ${this.formatDate(event.date)} kl. ${event.time}</div>
                         <div class="event-meta-item">📍 ${event.location}</div>
-                        ${distance ? `<div class="event-distance">${distance} km away</div>` : ''}
+                        ${distance ? `<div class="event-distance">${distance} km væk</div>` : ''}
                     </div>
                 </div>
                 <div class="event-footer">
-                    <div class="event-participants">${event.participants}/${event.capacity} joined</div>
-                    ${isJoined ? '<span class="joined-badge">✓ Joined</span>' : ''}
+                    <div class="event-participants">${event.participants}/${event.capacity} tilmeldt</div>
+                    ${isJoined ? '<span class="joined-badge">✓ Tilmeldt</span>' : ''}
                 </div>
             `;
 
@@ -387,7 +392,7 @@ class UIController {
         eventsList.innerHTML = '';
 
         if (joinedEvents.length === 0) {
-            eventsList.innerHTML = '<div class="empty-state">You haven\'t joined any events yet. <br>Check out events in the "Events" tab!</div>';
+            eventsList.innerHTML = '<div class="empty-state">Du har ikke tilmeldt dig nogen events endnu. <br>Se events under fanen "Events"!</div>';
             return;
         }
 
@@ -408,14 +413,14 @@ class UIController {
                     <h3>${event.title}</h3>
                     <p>${event.description.substring(0, 100)}${event.description.length > 100 ? '...' : ''}</p>
                     <div class="event-meta">
-                        <div class="event-meta-item">📅 ${this.formatDate(event.date)} at ${event.time}</div>
+                        <div class="event-meta-item">📅 ${this.formatDate(event.date)} kl. ${event.time}</div>
                         <div class="event-meta-item">📍 ${event.location}</div>
-                        ${distance ? `<div class="event-distance">${distance} km away</div>` : ''}
+                        ${distance ? `<div class="event-distance">${distance} km væk</div>` : ''}
                     </div>
                 </div>
                 <div class="event-footer">
-                    <div class="event-participants">${event.participants}/${event.capacity} joined</div>
-                    <span class="joined-badge">✓ Joined</span>
+                    <div class="event-participants">${event.participants}/${event.capacity} tilmeldt</div>
+                    <span class="joined-badge">✓ Tilmeldt</span>
                 </div>
             `;
 
@@ -441,15 +446,16 @@ class UIController {
             </div>
             <p>${event.description}</p>
             <div class="modal-meta">
-                <div class="modal-meta-item">📅 <strong>Date:</strong> ${this.formatDate(event.date)}</div>
-                <div class="modal-meta-item">🕐 <strong>Time:</strong> ${event.time}</div>
-                <div class="modal-meta-item">📍 <strong>Location:</strong> ${event.location}</div>
-                ${distance ? `<div class="modal-meta-item">🗺️ <strong>Distance:</strong> ${distance} km away</div>` : ''}
-                <div class="modal-meta-item">👥 <strong>Participants:</strong> ${event.participants}/${event.capacity}</div>
-                <div class="modal-meta-item">👤 <strong>Created by:</strong> ${event.creator}</div>
+                <div class="modal-meta-item">📅 <strong>Dato:</strong> ${this.formatDate(event.date)}</div>
+                <div class="modal-meta-item">🕐 <strong>Tidspunkt:</strong> ${event.time}</div>
+                <div class="modal-meta-item">📍 <strong>Sted:</strong> ${event.location}</div>
+                ${distance ? `<div class="modal-meta-item">🗺️ <strong>Afstand:</strong> ${distance} km væk</div>` : ''}
+                <div class="modal-meta-item">👥 <strong>Deltagere:</strong> ${event.participants}/${event.capacity}</div>
+                <div class="modal-meta-item">👤 <strong>Oprettet af:</strong> ${event.creator}</div>
+                ${event.latitude && event.longitude ? `<div class="modal-meta-item"><a href="https://www.google.com/maps/search/?api=1&query=${event.latitude},${event.longitude}" target="_blank" rel="noopener noreferrer">Åbn i Google Maps</a></div>` : ''}
             </div>
             <div class="modal-actions">
-                <button class="btn-primary" id="joinLeaveBtn">${isJoined ? 'Leave Event' : 'Join Event'}</button>
+                <button class="btn-primary" id="joinLeaveBtn">${isJoined ? 'Forlad event' : 'Tilmeld event'}</button>
             </div>
         `;
 
@@ -459,14 +465,14 @@ class UIController {
         btnJoinLeave.addEventListener('click', () => {
             if (isJoined) {
                 this.eventManager.leaveEvent(event.id);
-                this.showSuccessMessage('Left the event');
+                this.showSuccessMessage('Du har forladt eventet');
             } else {
                 if (event.participants >= event.capacity) {
-                    alert('Event is full!');
+                    alert('Eventet er fyldt!');
                     return;
                 }
                 this.eventManager.joinEvent(event.id);
-                this.showSuccessMessage('Joined the event!');
+                this.showSuccessMessage('Du er tilmeldt!');
             }
             this.closeModal();
             this.renderEvents();
@@ -479,30 +485,37 @@ class UIController {
         document.getElementById('eventModal').classList.remove('show');
     }
 
-    getUserLocation() {
+    getUserLocation(useNearbyFilter = false) {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     const { latitude, longitude } = position.coords;
                     this.eventManager.setUserLocation(latitude, longitude);
 
-                    // If in create form, populate coordinates
-                    const latInput = document.getElementById('eventLatitude');
-                    const lonInput = document.getElementById('eventLongitude');
-                    if (latInput && lonInput) {
-                        latInput.value = latitude.toFixed(4);
-                        lonInput.value = longitude.toFixed(4);
+                    if (useNearbyFilter) {
+                        // Bruges fra "Find i nærheden"-knappen
+                        this.nearbyMode = true;
+                        this.showSuccessMessage('Viser events i nærheden af dig (ca. 10 km)');
+                    } else {
+                        // Bruges fra formularen til at udfylde felter
+                        this.nearbyMode = false;
+                        const latInput = document.getElementById('eventLatitude');
+                        const lonInput = document.getElementById('eventLongitude');
+                        if (latInput && lonInput) {
+                            latInput.value = latitude.toFixed(4);
+                            lonInput.value = longitude.toFixed(4);
+                        }
+                        this.showSuccessMessage('Placering opdateret i formularen!');
                     }
 
-                    this.showSuccessMessage('Location updated!');
                     this.renderEvents();
                 },
                 (error) => {
-                    alert('Could not get your location. Please enable location services.');
+                    alert('Kunne ikke hente din placering. Slå placeringstjenester til i browseren.');
                 }
             );
         } else {
-            alert('Geolocation is not supported by your browser.');
+            alert('Placering understøttes ikke af din browser.');
         }
     }
 
@@ -522,19 +535,19 @@ class UIController {
 
     formatDate(dateString) {
         const date = new Date(dateString + 'T00:00:00');
-        return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        return date.toLocaleDateString('da-DK', { weekday: 'short', month: 'short', day: 'numeric' });
     }
 
     formatCategory(category) {
         const categories = {
-            sports: '⚽ Sports',
-            music: '🎵 Music',
-            food: '🍽️ Food & Dining',
-            outdoor: '🥾 Outdoor',
-            social: '👥 Social',
-            education: '📚 Education',
-            art: '🎨 Art & Culture',
-            other: '📌 Other'
+            sports: '⚽ Sport',
+            music: '🎵 Musik',
+            food: '🍽️ Mad & drikke',
+            outdoor: '🥾 Udendørs',
+            social: '👥 Socialt',
+            education: '📚 Uddannelse',
+            art: '🎨 Kunst & kultur',
+            other: '📌 Andet'
         };
         return categories[category] || category;
     }
