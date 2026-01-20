@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Lokale events – iPhone</title>
+    <link rel="stylesheet" href="css/style-iphone.css">
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="phone-notch-area"></div>
+        <div class="phone-app">
+            <header class="header">
+                <h1>Lokale events</h1>
+                <p class="tagline">Find og deltag i events i nærheden</p>
+            </header>
+
+            <!-- Navigation Tabs -->
+            <nav class="nav-tabs">
+                <button class="tab-btn active" data-tab="events">Events</button>
+                <button class="tab-btn" data-tab="create">Opret</button>
+                <button class="tab-btn" data-tab="joined">Mine</button>
+            </nav>
+
+            <main class="content">
+                <!-- Events Tab -->
+                <div id="events" class="tab-content active">
+                    <div class="section-header">
+                        <h2>Find events</h2>
+                        <div class="controls">
+                            <input type="text" id="searchInput" placeholder="Søg efter events..." class="search-input">
+                            <select id="categoryFilter" class="category-filter">
+                                <option value="">Alle kategorier</option>
+                                <option value="sports">Sport</option>
+                                <option value="music">Musik</option>
+                                <option value="food">Mad & drikke</option>
+                                <option value="outdoor">Udendørs</option>
+                                <option value="social">Socialt</option>
+                                <option value="education">Uddannelse</option>
+                                <option value="art">Kunst & kultur</option>
+                                <option value="other">Andet</option>
+                            </select>
+                            <button id="getLocationBtn" class="btn-primary btn-icon">📍 I nærheden</button>
+                        </div>
+                    </div>
+
+                    <div id="eventsList" class="events-grid">
+                        <div class="loading-placeholder">Indlæser events...</div>
+                    </div>
+                </div>
+
+                <!-- Create Event Tab -->
+                <div id="create" class="tab-content">
+                    <div class="section-header">
+                        <h2>Opret event</h2>
+                    </div>
+
+                    <form id="createEventForm" class="create-form">
+                        <div class="form-group">
+                            <label for="eventTitle">Titel</label>
+                            <input type="text" id="eventTitle" required placeholder="Indtast titel">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="eventCategory">Kategori</label>
+                                <select id="eventCategory" required>
+                                    <option value="">Vælg kategori</option>
+                                    <option value="sports">Sport</option>
+                                    <option value="music">Musik</option>
+                                    <option value="food">Mad & drikke</option>
+                                    <option value="outdoor">Udendørs</option>
+                                    <option value="social">Socialt</option>
+                                    <option value="education">Uddannelse</option>
+                                    <option value="art">Kunst & kultur</option>
+                                    <option value="other">Andet</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="eventDate">Dato</label>
+                                <input type="date" id="eventDate" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="eventTime">Tidspunkt</label>
+                                <input type="time" id="eventTime" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="eventLocation">Sted</label>
+                            <input type="text" id="eventLocation" required placeholder="Indtast sted">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="eventLatitude">Breddegrad</label>
+                                <input type="number" id="eventLatitude" step="0.0001" placeholder="fx 55.6761">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="eventLongitude">Længdegrad</label>
+                                <input type="number" id="eventLongitude" step="0.0001" placeholder="fx 12.5683">
+                            </div>
+
+                            <div class="form-group">
+                                <button type="button" id="getCoordinates" class="btn-secondary btn-icon">📍 Min placering</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="eventDescription">Beskrivelse</label>
+                            <textarea id="eventDescription" rows="4" placeholder="Fortæl lidt om dit event..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="eventCapacity">Maks. deltagere</label>
+                            <input type="number" id="eventCapacity" min="1" value="50">
+                        </div>
+
+                        <button type="submit" class="btn-primary btn-large">Opret event</button>
+                    </form>
+                </div>
+
+                <!-- My Events Tab -->
+                <div id="joined" class="tab-content">
+                    <div class="section-header">
+                        <h2>Mine events</h2>
+                    </div>
+
+                    <div id="joinedEventsList" class="events-grid">
+                        <div class="empty-state">
+                            Du har ikke tilmeldt dig nogen events endnu. <br>
+                            Se events under fanen "Events"!
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Event Detail Modal -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
+
+
