@@ -486,6 +486,15 @@ class UIController {
     }
 
     getUserLocation(useNearbyFilter = false) {
+        // Hvis nearbyMode allerede er aktiv, så slå det fra (vis alle events)
+        if (useNearbyFilter && this.nearbyMode) {
+            this.nearbyMode = false;
+            this.updateNearbyButton();
+            this.showSuccessMessage('Viser alle events');
+            this.renderEvents();
+            return;
+        }
+
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
@@ -495,6 +504,7 @@ class UIController {
                     if (useNearbyFilter) {
                         // Bruges fra "Find i nærheden"-knappen
                         this.nearbyMode = true;
+                        this.updateNearbyButton();
                         this.showSuccessMessage('Viser events i nærheden af dig (ca. 10 km)');
                     } else {
                         // Bruges fra formularen til at udfylde felter
@@ -516,6 +526,21 @@ class UIController {
             );
         } else {
             alert('Placering understøttes ikke af din browser.');
+        }
+    }
+
+    updateNearbyButton() {
+        const btn = document.getElementById('getLocationBtn');
+        if (btn) {
+            if (this.nearbyMode) {
+                btn.textContent = '❌ Vis alle events';
+                btn.classList.add('btn-secondary');
+                btn.classList.remove('btn-primary');
+            } else {
+                btn.textContent = '📍 Find i nærheden';
+                btn.classList.remove('btn-secondary');
+                btn.classList.add('btn-primary');
+            }
         }
     }
 
