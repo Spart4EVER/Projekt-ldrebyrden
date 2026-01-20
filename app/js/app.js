@@ -403,7 +403,27 @@ class UIController {
             return;
         }
 
-        joinedEvents.forEach(event => {
+        // Filter to upcoming events (fra i dag og frem) and sort by date/time
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const upcoming = joinedEvents
+            .filter(event => {
+                const eventDate = new Date(event.date + 'T00:00:00');
+                return eventDate >= today;
+            })
+            .sort((a, b) => {
+                const aDate = new Date(a.date + 'T' + (a.time || '00:00'));
+                const bDate = new Date(b.date + 'T' + (b.time || '00:00'));
+                return aDate - bDate;
+            });
+
+        if (upcoming.length === 0) {
+            eventsList.innerHTML = '<div class="empty-state">Ingen kommende events. <br>Se dine tidligere events under "Mine events" på computeren.</div>';
+            return;
+        }
+
+        upcoming.forEach(event => {
             const distance = this.eventManager.userLocation ?
                 this.eventManager.calculateDistance(
                     this.eventManager.userLocation.latitude,
