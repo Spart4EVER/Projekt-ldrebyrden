@@ -126,7 +126,7 @@
                 <!-- My Events Tab -->
                 <div id="joined" class="tab-content">
                     <div class="section-header">
-                        <h2>Mine events</h2>
+                        <h2>Eventkalender</h2>
                     </div>
 
                     <div id="joinedEventsList" class="events-grid">
@@ -136,7 +136,66 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Messages Tab -->
+                <div id="messages" class="tab-content">
+                    <div class="section-header">
+                        <h2>Beskeder</h2>
+                    </div>
+                    <div class="empty-state">
+                        Ingen beskeder endnu. <br>
+                        Du vil se opdateringer fra dine events her.
+                    </div>
+                </div>
+
+                <!-- Search Tab -->
+                <div id="search" class="tab-content">
+                    <div class="section-header">
+                        <h2>Søg</h2>
+                    </div>
+                    <div class="empty-state">
+                        Brug søgefeltet på <strong>Hjem</strong> til at finde events. <br><br>
+                        <button class="btn-primary btn-large" onclick="document.querySelector('.bottom-bar [data-tab=&quot;events&quot;]').click(); setTimeout(() => document.getElementById('searchInput').focus(), 50);">
+                            Gå til søgning
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Profile Tab -->
+                <div id="profile" class="tab-content">
+                    <div class="section-header">
+                        <h2>Min profil</h2>
+                    </div>
+                    <div class="empty-state">
+                        <p><strong>Bruger:</strong> Dig</p>
+                        <p>Her kan du senere se din aktivitet og tilpasse dine præferencer.</p>
+                    </div>
+                </div>
             </main>
+
+            <!-- Bottom Navigation Bar -->
+            <nav class="bottom-bar">
+                <button class="tab-btn bottom-tab-btn" data-tab="joined">
+                    <span class="icon">📅</span>
+                    <span class="label">Kalender</span>
+                </button>
+                <button class="tab-btn bottom-tab-btn" data-tab="messages">
+                    <span class="icon">💬</span>
+                    <span class="label">Beskeder</span>
+                </button>
+                <button class="tab-btn bottom-tab-btn active" data-tab="events">
+                    <span class="icon">🏠</span>
+                    <span class="label">Hjem</span>
+                </button>
+                <button class="tab-btn bottom-tab-btn" data-tab="search">
+                    <span class="icon">🔍</span>
+                    <span class="label">Søg</span>
+                </button>
+                <button class="tab-btn bottom-tab-btn" data-tab="profile">
+                    <span class="icon">👤</span>
+                    <span class="label">Profil</span>
+                </button>
+            </nav>
         </div>
     </div>
 
