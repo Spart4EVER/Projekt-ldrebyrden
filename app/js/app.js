@@ -249,7 +249,7 @@ class UIController {
     setupEventListeners() {
         // Tab navigation
         document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => this.switchTab(e.target.dataset.tab));
+            btn.addEventListener('click', (e) => this.switchTab(e.target.dataset.tab, btn));
         });
 
         // Create event form
@@ -271,14 +271,16 @@ class UIController {
         });
     }
 
-    switchTab(tabName) {
+    switchTab(tabName, button) {
         // Hide all tabs
         document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
 
         // Show selected tab
         document.getElementById(tabName).classList.add('active');
-        event.target.classList.add('active');
+        if (button) {
+            button.classList.add('active');
+        }
 
         // Render appropriate content
         if (tabName === 'events') {
@@ -309,6 +311,7 @@ class UIController {
         }
 
         this.eventManager.createEvent(eventData);
+        this.renderEvents();
         
         // Show success message
         this.showSuccessMessage('Event created successfully!');
