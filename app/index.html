@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Events - Create, Join & Discover Events</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Local Events</h1>
+            <p class="tagline">Discover and join events in your area</p>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-tab="events">Events</button>
+            <button class="tab-btn" data-tab="create">Create Event</button>
+            <button class="tab-btn" data-tab="joined">My Events</button>
+        </nav>
+
+        <!-- Events Tab -->
+        <div id="events" class="tab-content active">
+            <div class="section-header">
+                <h2>Discover Events</h2>
+                <div class="controls">
+                    <input type="text" id="searchInput" placeholder="Search events..." class="search-input">
+                    <select id="categoryFilter" class="category-filter">
+                        <option value="">All Categories</option>
+                        <option value="sports">Sports</option>
+                        <option value="music">Music</option>
+                        <option value="food">Food & Dining</option>
+                        <option value="outdoor">Outdoor</option>
+                        <option value="social">Social</option>
+                        <option value="education">Education</option>
+                        <option value="art">Art & Culture</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <button id="getLocationBtn" class="btn-primary">📍 Find Near Me</button>
+                </div>
+            </div>
+
+            <div id="eventsList" class="events-grid">
+                <div class="loading-placeholder">Loading events...</div>
+            </div>
+        </div>
+
+        <!-- Create Event Tab -->
+        <div id="create" class="tab-content">
+            <div class="section-header">
+                <h2>Create a New Event</h2>
+            </div>
+
+            <form id="createEventForm" class="create-form">
+                <div class="form-group">
+                    <label for="eventTitle">Event Title</label>
+                    <input type="text" id="eventTitle" required placeholder="Enter event title">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eventCategory">Category</label>
+                        <select id="eventCategory" required>
+                            <option value="">Select category</option>
+                            <option value="sports">Sports</option>
+                            <option value="music">Music</option>
+                            <option value="food">Food & Dining</option>
+                            <option value="outdoor">Outdoor</option>
+                            <option value="social">Social</option>
+                            <option value="education">Education</option>
+                            <option value="art">Art & Culture</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eventDate">Date</label>
+                        <input type="date" id="eventDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eventTime">Time</label>
+                        <input type="time" id="eventTime" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventLocation">Location</label>
+                    <input type="text" id="eventLocation" required placeholder="Enter event location">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eventLatitude">Latitude</label>
+                        <input type="number" id="eventLatitude" step="0.0001" placeholder="e.g., 55.6761">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eventLongitude">Longitude</label>
+                        <input type="number" id="eventLongitude" step="0.0001" placeholder="e.g., 12.5683">
+                    </div>
+
+                    <div class="form-group">
+                        <button type="button" id="getCoordinates" class="btn-secondary">📍 Get My Location</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventDescription">Description</label>
+                    <textarea id="eventDescription" rows="5" placeholder="Tell people about your event..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventCapacity">Max Participants</label>
+                    <input type="number" id="eventCapacity" min="1" value="50">
+                </div>
+
+                <button type="submit" class="btn-primary btn-large">Create Event</button>
+            </form>
+        </div>
+
+        <!-- My Events Tab -->
+        <div id="joined" class="tab-content">
+            <div class="section-header">
+                <h2>My Events</h2>
+            </div>
+
+            <div id="joinedEventsList" class="events-grid">
+                <div class="empty-state">You haven't joined any events yet. <br>Check out events in the "Events" tab!</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Event Detail Modal -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
