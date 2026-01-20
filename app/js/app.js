@@ -250,7 +250,8 @@ class UIController {
     setupEventListeners() {
         // Tab navigation
         document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => this.switchTab(e.target.dataset.tab, btn));
+            // Use the button's dataset (not the inner span) so taps on icon/label still work.
+            btn.addEventListener('click', () => this.switchTab(btn.dataset.tab, btn));
         });
 
         // Create event form
@@ -275,6 +276,7 @@ class UIController {
     }
 
     switchTab(tabName, button) {
+        if (!tabName) return;
         // Hide all tabs
         document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
